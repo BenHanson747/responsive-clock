@@ -1,29 +1,31 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { BiMoon } from 'react-icons/bi';
-import { FiSun } from 'react-icons/fi';
+import React, { useState, useEffect } from "react";
+import { BiMoon } from "react-icons/bi";
+import { FiSun } from "react-icons/fi";
 
 function DarkMode() {
+  const [darkTheme, setDarkTheme] = useState(
+    () => localStorage.getItem("darkTheme") === "true"
+  );
 
-   const [modeIcon , setModeIcon] = useState("false");
-   const [darkTheme , setDarkTheme] = useState('');
+  const toggleDarkTheme = () => {
+    const nextDarkTheme = !darkTheme;
+    setDarkTheme(nextDarkTheme);
+    localStorage.setItem("darkTheme", nextDarkTheme);
+  };
 
-   useEffect(() => {
-       document.body.classList.toggle('dark-theme', darkTheme);
-   },[darkTheme]
-   
-   )
-   
-   const darkModeToggle = () => {
-       setModeIcon(!modeIcon);
-       setDarkTheme(!darkTheme);
-   }
+  useEffect(() => {
+    document.body.classList.toggle("dark-theme", darkTheme);
+  }, [darkTheme]);
 
-return (
-        <button className="clock__theme" onClick={darkModeToggle} aria-label = {modeIcon ? "Light Mode" : "Dark Mode"}>
-            {modeIcon ? <BiMoon /> : <FiSun />}
-        </button>
-    )
+  return (
+    <button
+      className={`clock__theme ${darkTheme ? "dark" : "light"}`}
+      onClick={toggleDarkTheme}
+      aria-label={darkTheme ? "Light Mode" : "Dark Mode"}
+    >
+      {darkTheme ? <FiSun /> : <BiMoon />}
+    </button>
+  );
 }
 
 export default DarkMode;
